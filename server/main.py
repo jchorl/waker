@@ -4,7 +4,8 @@ import threading
 import time
 
 from alarms import delete_alarm, get_alarms, new_alarm
-from spotify import get_playlists
+from db import init_db
+from spotify import get_playlists, set_default_playlist
 
 
 # Flask routing
@@ -29,6 +30,19 @@ def delete_alarm_handler(alarm_id):
 def get_playlists_handler():
     playlists = get_playlists()
     return jsonify(playlists)
+
+@app.route('/spotify/default_playlist', methods=['GET'])
+def get_default_playlist_handler():
+    playlist_uri = get_default_playlist()
+    return playlist_uri
+
+@app.route('/spotify/default_playlist', methods=['PUT'])
+def set_default_playlist_handler():
+    playlist_uri = set_default_playlist(request.get_json()['playlist_uri'])
+    return playlist_uri
+
+# init db
+init_db()
 
 # alarm execution thread
 class ScheduleThread(threading.Thread):
