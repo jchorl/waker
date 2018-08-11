@@ -57,3 +57,7 @@ def new_alarm(alarm_info):
     else:
         schedule.every().day.at(alarm_time).do(alarm_job_once)
     return alarm_info
+
+def delete_alarm(alarm_id):
+    schedule.clear(alarm_id)
+    return alarm_id

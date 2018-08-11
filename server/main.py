@@ -3,7 +3,7 @@ import schedule
 import threading
 import time
 
-from alarms import get_alarms, new_alarm
+from alarms import delete_alarm, get_alarms, new_alarm
 
 
 # Flask routing
@@ -18,6 +18,11 @@ def get_alarms_handler():
 def post_alarm_handler():
     alarm = new_alarm(request.get_json())
     return jsonify(alarm)
+
+@app.route('/alarms/<uuid:alarm_id>', methods=['DELETE'])
+def delete_alarm_handler(alarm_id):
+    alarm_id = delete_alarm(alarm_id)
+    return alarm_id
 
 # alarm execution thread
 class ScheduleThread(threading.Thread):
