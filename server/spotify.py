@@ -15,6 +15,13 @@ def search(term):
     result = spotify.search(term)
     return result
 
+def clear_next_wakeup_song():
+    session = get_session()
+    confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
+    if confValue is not None:
+        session.delete(confValue)
+        session.commit()
+
 def get_next_wakeup_song():
     session = get_session()
     confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)

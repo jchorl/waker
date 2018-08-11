@@ -2,6 +2,8 @@ from itertools import groupby
 import schedule
 from uuid import uuid4
 
+from alarm import alarm_job, alarm_job_once
+
 
 """
 an alarm is comprised of multiple jobs, one for each day it should run
@@ -18,13 +20,6 @@ alarms are specified by a dict:
                                     // otherwise the alarm will just run at that time once
     }
 """
-
-def alarm_job():
-    print("I'm working...")
-
-def alarm_job_once():
-    print("I'm working once...")
-    return schedule.CancelJob
 
 def get_alarms():
     # group jobs by tag
