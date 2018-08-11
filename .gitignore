@@ -1,3 +1,4 @@
 server/__pycache__
 server/secrets.py
 server/.cache-*
+server/db.db
