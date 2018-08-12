@@ -17,7 +17,7 @@ class SpotifyConfigValue(Base):
 
 # init the db engine
 def init_db():
-    engine = create_engine('sqlite:///db.db', echo=True)
+    engine = create_engine('sqlite:///db.db')
     Base.metadata.create_all(engine)
     global Session
     Session = sessionmaker(bind=engine)
