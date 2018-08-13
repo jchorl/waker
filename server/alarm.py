@@ -3,6 +3,7 @@ import schedule
 import time
 
 from config import SPOTIFY_DEVICE_NAME, SPOTIFY_VOLUME
+from gcalendar import get_calendar_events
 from spotify import clear_next_wakeup_song, current_playback, get_default_playlist, get_devices, get_next_wakeup_song, get_num_tracks_in_playlist, pause_playback, play_playlist, play_track, volume
 
 
@@ -59,6 +60,10 @@ def alarm_job():
 
     # pause the song
     pause_playback()
+
+    # print calendar events
+    cal_event_string = get_calendar_events()
+    print(cal_event_string)
 
 def alarm_job_once():
     alarm_job()
