@@ -41,10 +41,18 @@ def __play_song():
         offset = random.randint(0, num_tracks)
         play_playlist(playlist_uri, offset, device['id'])
 
-    cur_song_id = None
+    duration_ms = None
 
     # start polling to wait until the song is over
     while True:
+        if duration_ms is None:
+            playback = current_playback()
+            duration_ms = playback['item']['duration_ms']
+        elif duration_ms <= 2000:
+            break
+        else:
+            duration_ms -= 1000
+
         # slowly crank the volume
         if cur_vol <= SPOTIFY_VOLUME - 10:
             cur_vol += 10
@@ -52,20 +60,6 @@ def __play_song():
         elif cur_vol != SPOTIFY_VOLUME:
             cur_vol = SPOTIFY_VOLUME
             volume(cur_vol, device['id'])
-
-        playback = current_playback()
-
-        # check if at the end of the song
-        progress_ms = playback['progress_ms']
-        duration_ms = playback['item']['duration_ms']
-        if progress_ms >= duration_ms - 1500:
-            break
-
-        # check if onto the next song
-        if cur_song_id is None:
-            cur_song_id = playback['item']['id']
-        elif cur_song_id != playback['item']['id']:
-            break
 
         time.sleep(1)
 
