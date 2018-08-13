@@ -63,8 +63,9 @@ init_db()
 class ScheduleThread(threading.Thread):
     @classmethod
     def run(cls):
-        schedule.run_pending()
-        time.sleep(1)
+        while True:
+            schedule.run_pending()
+            time.sleep(60)
 
 continuous_thread = ScheduleThread()
 continuous_thread.start()

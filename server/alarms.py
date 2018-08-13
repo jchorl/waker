@@ -38,19 +38,23 @@ def get_alarms():
                     'hour': alarm_job.at_time.hour,
                     'minute': alarm_job.at_time.minute,
                     } # overwrite the time each time, they should all be the same anyway
+
+            # if there is already a next_run, take the min, otherwise just use the next_run of the current alarm_job
+            alarm['next_run'] = min(alarm['next_run'], alarm_job.next_run) if 'next_run' in alarm else alarm_job.next_run
         alarms.append(alarm)
     return alarms
 
 def new_alarm(alarm_info):
-    alarm_id = uuid4()
+    alarm_id = str(uuid4())
     alarm_time = '{hour:02d}:{minute:02d}'.format(**alarm_info['time'])
-    if alarm['repeat']:
+    if alarm_info['repeat']:
         for day in alarm_info['days']:
             job = schedule.every().week
             job.start_day = day
             job.at(alarm_time).tag(alarm_id).do(alarm_job)
+            alarm_info['next_run'] = min(alarm_info['next_run'], job.next_run) if 'next_run' in alarm_info else job.next_run
     else:
-        schedule.every().day.at(alarm_time).do(alarm_job_once)
+        schedule.every().day.at(alarm_time).tag(alarm_id).do(alarm_job_once)
     return alarm_info
 
 def delete_alarm(alarm_id):
