@@ -20,4 +20,3 @@ def synthesize_text(text):
     # The response's audio_content is binary.
     with open('output.mp3', 'wb') as out:
         out.write(response.audio_content)
-        print('Audio content written to file "output.mp3"')

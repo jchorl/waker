@@ -1,3 +1,4 @@
+import pygame
 import random
 import schedule
 import time
@@ -6,13 +7,23 @@ from config import SPOTIFY_DEVICE_NAME, SPOTIFY_VOLUME
 from gcalendar import get_calendar_events
 from spotify import clear_next_wakeup_song, current_playback, get_default_playlist, get_devices, get_next_wakeup_song, get_num_tracks_in_playlist, pause_playback, play_playlist, play_track, volume
 from text_to_speech import synthesize_text
+from weather_forecast import get_forecast
 
 
 def alarm_job():
     __play_song()
 
+    forecast_string = get_forecast()
     cal_event_string = get_calendar_events()
-    synthesize_text(cal_event_string)
+    speech_string = forecast_string + cal_event_string
+    synthesize_text(speech_string)
+
+    pygame.init()
+    pygame.mixer.init()
+    pygame.mixer.music.load('./output.mp3')
+    pygame.mixer.music.play()
+    while pygame.mixer.music.get_busy() == True:
+        continue
 
 def alarm_job_once():
     alarm_job()
