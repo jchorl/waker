@@ -4,3 +4,4 @@ server/.cache-*
 server/db.db
 server/credentials.json
 server/token.json
+server/service-account-key.json

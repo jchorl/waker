@@ -5,9 +5,20 @@ import time
 from config import SPOTIFY_DEVICE_NAME, SPOTIFY_VOLUME
 from gcalendar import get_calendar_events
 from spotify import clear_next_wakeup_song, current_playback, get_default_playlist, get_devices, get_next_wakeup_song, get_num_tracks_in_playlist, pause_playback, play_playlist, play_track, volume
+from text_to_speech import synthesize_text
 
 
 def alarm_job():
+    __play_song()
+
+    cal_event_string = get_calendar_events()
+    synthesize_text(cal_event_string)
+
+def alarm_job_once():
+    alarm_job()
+    return schedule.CancelJob
+
+def __play_song():
     # select the device to play on
     devices = get_devices()
     device = next(d for d in devices if d['name'] == SPOTIFY_DEVICE_NAME)
@@ -60,11 +71,3 @@ def alarm_job():
 
     # pause the song
     pause_playback()
-
-    # print calendar events
-    cal_event_string = get_calendar_events()
-    print(cal_event_string)
-
-def alarm_job_once():
-    alarm_job()
-    return schedule.CancelJob

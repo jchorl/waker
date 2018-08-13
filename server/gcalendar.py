@@ -35,3 +35,8 @@ def get_calendar_events():
         start = datetime.datetime.fromisoformat(event['start']['dateTime'])
         cal_string += event['summary'] + ' at ' + start.strftime('%H:%M') + '. '
     return cal_string
+
+# there is a flag conflict with flask, so running this file standalone will just auth with google
+# so the --noauth_local_webserver flag can be passed
+if __name__ == '__main__':
+    get_calendar_events()
