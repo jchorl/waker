@@ -1,5 +1,13 @@
 import React from 'react';
-import { FlatList, View, StyleSheet, Text, TextInput, TouchableOpacity } from 'react-native';
+import {
+  FlatList,
+  Picker,
+  StyleSheet,
+  Text,
+  TextInput,
+  TouchableOpacity,
+  View,
+} from 'react-native';
 import { PI_URL } from './Config';
 
 
@@ -10,6 +18,8 @@ export default class Music extends React.Component {
       text: '',
       results: [],
       wakeupSong: '',
+      playlists: [],
+      defaultPlaylist: null,
     };
   }
 
@@ -19,6 +29,16 @@ export default class Music extends React.Component {
     fetch(PI_URL + '/spotify/next_wakeup_song').
       then(response => response.json()).
       then(wakeupSong => this.setState({ wakeupSong }));
+    fetch(PI_URL + '/spotify/default_playlist').
+      then(response => response.json()).
+      then(defaultPlaylist => {
+        if (defaultPlaylist) {
+          this.setState({ defaultPlaylist: defaultPlaylist.uri })
+        }
+      });
+    fetch(PI_URL + '/spotify/playlists').
+      then(response => response.json()).
+      then(playlists => this.setState({ playlists }));
   }
 
   searchSpotify = text => {
@@ -57,6 +77,26 @@ export default class Music extends React.Component {
       });
   };
 
+  selectDefaultPlaylist = playlistUri => {
+    const playlist = this.state.playlists.find(p => p.uri === playlistUri);
+
+    const headers = new Headers();
+    headers.append("Accept", "application/json");
+    headers.append("Content-Type", "application/json");
+    fetch(PI_URL + '/spotify/default_playlist', {
+      body: JSON.stringify({
+        uri: playlist.uri,
+        name: playlist.name,
+      }),
+      method: 'PUT',
+      headers,
+    }).
+      then(response => response.json()).
+      then(playlist => {
+        this.setState({defaultPlaylist: playlist.uri})
+      });
+  };
+
   render() {
     return (
       <View style={[styles.scene]}>
@@ -73,6 +113,16 @@ export default class Music extends React.Component {
             Wakeup Song: {this.state.wakeupSong ? this.state.wakeupSong.name + ' - ' + this.state.wakeupSong.artist : 'Not set'}
           </Text>
         </View>
+        <View>
+          <Text>
+            Default Playlist:
+          </Text>
+        </View>
+        <Picker
+          selectedValue={ this.state.defaultPlaylist }
+          onValueChange={ this.selectDefaultPlaylist }>
+          { this.state.playlists.map(playlist => <Picker.Item key={ playlist.uri } label={ playlist.name } value={ playlist.uri } />) }
+        </Picker>
       </View>
     );
   }

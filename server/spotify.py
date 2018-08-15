@@ -67,18 +67,18 @@ def get_num_tracks_in_playlist(playlist_uri):
     playlist = spotify.user_playlist(SPOTIFY_USERNAME, playlist_uri)
     return playlist['tracks']['total']
 
-def set_default_playlist(playlist_uri):
+def set_default_playlist(playlist):
     session = get_session()
     confValue = session.query(SpotifyConfigValue).get(DEFAULT_PLAYLIST_KEY)
 
     if confValue is None:
-        confValue = SpotifyConfigValue(DEFAULT_PLAYLIST_KEY, playlist_uri)
+        confValue = SpotifyConfigValue(DEFAULT_PLAYLIST_KEY, json.dumps(playlist))
         session.add(confValue)
     else:
-        confValue.value = playlist_uri
+        confValue.value = json.dumps(playlist)
 
     session.commit()
-    return playlist_uri
+    return playlist
 
 def get_devices():
     token = __get_token(READ_PLAYBACK_SCOPE)
