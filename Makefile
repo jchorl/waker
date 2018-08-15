@@ -1,3 +1,7 @@
+UID=$(shell id -u)
+GID=$(shell id -g)
+IP=$(shell ip addr show | grep -E "inet ([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v ' lo' | head -1 | grep -oE "([0-9]{1,3}\.){3}[0-9]{1,3}" | grep -v 255)
+
 serve:
 	docker run -it --rm \
 		-v $(PWD):/waker \
@@ -18,3 +22,16 @@ auth-calendar:
 
 img-build:
 	docker build -t jchorl/waker .
+
+app:
+	docker container run --rm -it \
+		-v $(PWD)/app:/usr/src/app \
+		-w /usr/src/app \
+		-u $(UID):$(GID) \
+		-p 19000:19000 \
+		-p 19001:19001 \
+		-p 8081:8081 \
+		node \
+		sh -c 'REACT_NATIVE_PACKAGER_HOSTNAME="$(IP)" npm start -- --reset-cache'
+
+.PHONY: app
