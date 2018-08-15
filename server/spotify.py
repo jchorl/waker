@@ -1,3 +1,4 @@
+import json
 import spotipy
 import spotipy.util as util
 
@@ -30,21 +31,21 @@ def get_next_wakeup_song():
     session = get_session()
     confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
     if confValue is not None:
-        return confValue.value
+        return json.loads(confValue.value)
+    return None
 
-
-def set_next_wakeup_song(song_uri):
+def set_next_wakeup_song(song_info):
     session = get_session()
     confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
 
     if confValue is None:
-        confValue = SpotifyConfigValue(NEXT_WAKEUP_SONG_KEY, song_uri)
+        confValue = SpotifyConfigValue(NEXT_WAKEUP_SONG_KEY, json.dumps(song_info))
         session.add(confValue)
     else:
-        confValue.value = song_uri
+        confValue.value = json.dumps(song_info)
 
     session.commit()
-    return song_uri
+    return song_info
 
 def get_playlists():
     token = __get_token(PLAYLIST_READ_SCOPE)
@@ -56,7 +57,9 @@ def get_playlists():
 def get_default_playlist():
     session = get_session()
     confValue = session.query(SpotifyConfigValue).get(DEFAULT_PLAYLIST_KEY)
-    return confValue.value
+    if confValue is not None:
+        return json.loads(confValue.value)
+    return None
 
 def get_num_tracks_in_playlist(playlist_uri):
     token = __get_token(READ_PLAYBACK_SCOPE)

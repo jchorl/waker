@@ -43,11 +43,11 @@ def __play_song():
 
     # if the song was chosen, use it
     if wakeup_song is not None:
-        play_track(wakeup_song, device['id'])
+        play_track(wakeup_song['uri'], device['id'])
         clear_next_wakeup_song()
     # otherwise use the default playlist
     else:
-        playlist_uri = get_default_playlist()
+        playlist_uri = get_default_playlist()['uri']
         num_tracks = get_num_tracks_in_playlist(playlist_uri)
         offset = random.randint(0, num_tracks)
         play_playlist(playlist_uri, offset, device['id'])

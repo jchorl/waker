@@ -33,23 +33,23 @@ def get_playlists_handler():
 
 @app.route('/spotify/default_playlist', methods=['GET'])
 def get_default_playlist_handler():
-    playlist_uri = get_default_playlist()
-    return playlist_uri
+    playlist = get_default_playlist()
+    return jsonify(playlist)
 
 @app.route('/spotify/default_playlist', methods=['PUT'])
 def set_default_playlist_handler():
-    playlist_uri = set_default_playlist(request.get_json()['playlist_uri'])
-    return playlist_uri
+    playlist = set_default_playlist(request.get_json())
+    return jsonify(playlist)
 
 @app.route('/spotify/next_wakeup_song', methods=['GET'])
 def get_next_wakeup_song_handler():
     next_wakeup_song = get_next_wakeup_song()
-    return next_wakeup_song
+    return jsonify(next_wakeup_song)
 
 @app.route('/spotify/next_wakeup_song', methods=['PUT'])
 def set_next_wakeup_song_handler():
-    next_wakeup_song = set_next_wakeup_song(request.get_json()['song_uri'])
-    return next_wakeup_song
+    next_wakeup_song = set_next_wakeup_song(request.get_json())
+    return jsonify(next_wakeup_song)
 
 @app.route('/spotify/search', methods=['GET'])
 def search_handler():
