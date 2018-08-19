@@ -3,16 +3,17 @@ import { View, StyleSheet, Dimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
 import { Constants } from 'expo';
 import MusicView from './Music';
+import AlarmView from './Alarm';
 
 const MusicRoute = () => (
   <MusicView />
 );
 
 const AlarmsRoute = () => (
-  <View style={[styles.scene, { backgroundColor: '#673ab7' }]} />
+  <AlarmView />
 );
 
-export default class TabViewExample extends React.Component {
+export default class App extends React.Component {
   state = {
     index: 0,
     routes: [
@@ -46,9 +47,6 @@ export default class TabViewExample extends React.Component {
 }
 
 const styles = StyleSheet.create({
-  scene: {
-    flex: 1,
-  },
   header: {
     paddingTop: Constants.statusBarHeight,
   },

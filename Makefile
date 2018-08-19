@@ -28,9 +28,7 @@ app:
 		-v $(PWD)/app:/usr/src/app \
 		-w /usr/src/app \
 		-u $(UID):$(GID) \
-		-p 19000:19000 \
-		-p 19001:19001 \
-		-p 8081:8081 \
+		--net=host \
 		node \
 		sh -c 'REACT_NATIVE_PACKAGER_HOSTNAME="$(IP)" npm start -- --reset-cache'
 

@@ -23,7 +23,7 @@ def post_alarm_handler():
 
 @app.route('/alarms/<uuid:alarm_id>', methods=['DELETE'])
 def delete_alarm_handler(alarm_id):
-    alarm_id = delete_alarm(alarm_id)
+    alarm_id = delete_alarm(str(alarm_id))
     return alarm_id
 
 @app.route('/spotify/playlists', methods=['GET'])

@@ -54,7 +54,9 @@ def new_alarm(alarm_info):
             job.at(alarm_time).tag(alarm_id).do(alarm_job)
             alarm_info['next_run'] = min(alarm_info['next_run'], job.next_run) if 'next_run' in alarm_info else job.next_run
     else:
-        schedule.every().day.at(alarm_time).tag(alarm_id).do(alarm_job_once)
+        job = schedule.every().day.at(alarm_time).tag(alarm_id).do(alarm_job_once)
+        alarm_info['next_run'] = job.next_run
+    alarm_info['id'] = alarm_id
     return alarm_info
 
 def delete_alarm(alarm_id):

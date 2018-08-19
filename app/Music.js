@@ -12,16 +12,13 @@ import { PI_URL } from './Config';
 
 
 export default class Music extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      text: '',
-      results: [],
-      wakeupSong: '',
-      playlists: [],
-      defaultPlaylist: null,
-    };
-  }
+  state = {
+    text: '',
+    results: [],
+    wakeupSong: '',
+    playlists: [],
+    defaultPlaylist: null,
+  };
 
   componentWillMount() {
     const headers = new Headers();
