@@ -12,6 +12,9 @@ serve:
 		jchorl/waker \
 		sh -c "GOOGLE_APPLICATION_CREDENTIALS=\$$(pwd)/service-account-key.json FLASK_ENV=development FLASK_APP=main.py flask run --host=0.0.0.0"
 
+prod:
+		GOOGLE_APPLICATION_CREDENTIALS=\$$(pwd)/service-account-key.json FLASK_APP=main.py flask run
+
 auth-calendar:
 	docker run -it --rm \
 		-v $(PWD):/waker \
