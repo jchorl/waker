@@ -34,6 +34,9 @@ auth-calendar:
 img-build:
 	docker build -t jchorl/waker .
 
+prod-img-build:
+	docker build -f Dockerfile.pi -t jchorl/waker .
+
 app-img-build:
 	docker build -t jchorl/waker-app app
 
