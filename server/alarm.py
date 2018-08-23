@@ -1,3 +1,4 @@
+import datetime
 import pygame
 import random
 import schedule
@@ -11,6 +12,7 @@ from weather_forecast import get_forecast
 
 
 def alarm_job():
+    print('running alarm job at {}'.format(datetime.datetime.now()))
     __play_song()
 
     forecast_string = get_forecast()
@@ -24,6 +26,7 @@ def alarm_job():
     pygame.mixer.music.play()
     while pygame.mixer.music.get_busy() == True:
         continue
+    print('finished alarm job at {}'.format(datetime.datetime.now()))
 
 def alarm_job_once():
     alarm_job()
