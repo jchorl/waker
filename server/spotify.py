@@ -3,7 +3,8 @@ import spotipy
 import spotipy.util as util
 
 from config import SPOTIFY_USERNAME, SPOTIFY_CLIENT_ID
-from db import SpotifyConfigValue, get_session
+from db import db_session
+from models import SpotifyConfigValue
 from secrets import SPOTIFY_CLIENT_SECRET
 
 
@@ -21,30 +22,27 @@ def search(term):
     return result
 
 def clear_next_wakeup_song():
-    session = get_session()
-    confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
+    confValue = SpotifyConfigValue.query.get(NEXT_WAKEUP_SONG_KEY)
     if confValue is not None:
-        session.delete(confValue)
-        session.commit()
+        db_session.delete(confValue)
+        db_session.commit()
 
 def get_next_wakeup_song():
-    session = get_session()
-    confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
+    confValue = SpotifyConfigValue.query.get(NEXT_WAKEUP_SONG_KEY)
     if confValue is not None:
         return json.loads(confValue.value)
     return None
 
 def set_next_wakeup_song(song_info):
-    session = get_session()
-    confValue = session.query(SpotifyConfigValue).get(NEXT_WAKEUP_SONG_KEY)
+    confValue = SpotifyConfigValue.query.get(NEXT_WAKEUP_SONG_KEY)
 
     if confValue is None:
         confValue = SpotifyConfigValue(NEXT_WAKEUP_SONG_KEY, json.dumps(song_info))
-        session.add(confValue)
+        db_session.add(confValue)
     else:
         confValue.value = json.dumps(song_info)
 
-    session.commit()
+    db_session.commit()
     return song_info
 
 def get_playlists():
@@ -55,8 +53,7 @@ def get_playlists():
     return [playlist for playlist in playlists['items']]
 
 def get_default_playlist():
-    session = get_session()
-    confValue = session.query(SpotifyConfigValue).get(DEFAULT_PLAYLIST_KEY)
+    confValue = SpotifyConfigValue.query.get(DEFAULT_PLAYLIST_KEY)
     if confValue is not None:
         return json.loads(confValue.value)
     return None
@@ -68,16 +65,15 @@ def get_num_tracks_in_playlist(playlist_uri):
     return playlist['tracks']['total']
 
 def set_default_playlist(playlist):
-    session = get_session()
-    confValue = session.query(SpotifyConfigValue).get(DEFAULT_PLAYLIST_KEY)
+    confValue = SpotifyConfigValue.query.get(DEFAULT_PLAYLIST_KEY)
 
     if confValue is None:
         confValue = SpotifyConfigValue(DEFAULT_PLAYLIST_KEY, json.dumps(playlist))
-        session.add(confValue)
+        db_session.add(confValue)
     else:
         confValue.value = json.dumps(playlist)
 
-    session.commit()
+    db_session.commit()
     return playlist
 
 def get_devices():

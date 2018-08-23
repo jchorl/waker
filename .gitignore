@@ -6,3 +6,4 @@ server/credentials.json
 server/token.json
 server/service-account-key.json
 server/output.mp3
+.config

@@ -4,7 +4,7 @@ import threading
 import time
 
 from alarms import delete_alarm, get_alarms, new_alarm
-from db import init_db
+from db import db_session, init_db
 from spotify import get_playlists, get_default_playlist, get_next_wakeup_song, set_default_playlist, set_next_wakeup_song, search, get_devices
 
 
@@ -60,7 +60,10 @@ def search_handler():
 def get_devices_handler():
     return jsonify(get_devices())
 
-# init db
+@app.teardown_appcontext
+def shutdown_session(exception=None):
+    db_session.remove()
+
 init_db()
 
 # alarm execution thread
