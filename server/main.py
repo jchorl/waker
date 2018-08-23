@@ -5,7 +5,7 @@ import time
 
 from alarms import delete_alarm, get_alarms, new_alarm
 from db import init_db
-from spotify import get_playlists, get_default_playlist, get_next_wakeup_song, set_default_playlist, set_next_wakeup_song, search
+from spotify import get_playlists, get_default_playlist, get_next_wakeup_song, set_default_playlist, set_next_wakeup_song, search, get_devices
 
 
 # Flask routing
@@ -55,6 +55,10 @@ def set_next_wakeup_song_handler():
 def search_handler():
     results = search(request.args.get('q'))
     return jsonify(results)
+
+@app.route('/spotify/devices', methods=['GET'])
+def get_devices_handler():
+    return jsonify(get_devices())
 
 # init db
 init_db()
