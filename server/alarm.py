@@ -13,7 +13,10 @@ from weather_forecast import get_forecast
 
 def alarm_job():
     print('running alarm job at {}'.format(datetime.datetime.now()))
-    __play_song()
+    try:
+        __play_song()
+    except Exception as e:
+        print(str(e))
 
     forecast_string = get_forecast()
     cal_event_string = get_calendar_events()
@@ -74,7 +77,4 @@ def __play_song():
         time.sleep(1)
 
     # pause the song
-    try:
-        pause_playback()
-    except Exception as e:
-        print(str(e))
+    pause_playback()
