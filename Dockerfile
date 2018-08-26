@@ -2,6 +2,7 @@ FROM python:3.7
 LABEL maintainer "Josh Chorlton <josh@joshchorlton.com>"
 
 RUN apt-get update && apt-get install -y \
+    vlc \
     pulseaudio
 
 ADD . /waker

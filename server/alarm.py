@@ -1,8 +1,8 @@
 import datetime
-import pygame
 import random
 import schedule
 import time
+import vlc
 
 from config import SPOTIFY_DEVICE_NAME, SPOTIFY_VOLUME
 from gcalendar import get_calendar_events
@@ -20,12 +20,8 @@ def alarm_job():
     speech_string = forecast_string + cal_event_string
     synthesize_text(speech_string)
 
-    pygame.init()
-    pygame.mixer.init()
-    pygame.mixer.music.load('./output.mp3')
-    pygame.mixer.music.play()
-    while pygame.mixer.music.get_busy() == True:
-        continue
+    p = vlc.MediaPlayer('./output.mp3')
+    p.play()
     print('finished alarm job at {}'.format(datetime.datetime.now()))
 
 def alarm_job_once():
@@ -78,4 +74,7 @@ def __play_song():
         time.sleep(1)
 
     # pause the song
-    pause_playback()
+    try:
+        pause_playback()
+    except Exception as e:
+        print(str(e))

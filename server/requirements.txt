@@ -19,7 +19,7 @@ oauth2client==4.1.2
 protobuf==3.6.0
 pyasn1==0.4.4
 pyasn1-modules==0.2.2
-pygame==1.9.4
+python-vlc==3.0.102
 pytz==2018.5
 requests==2.19.1
 rsa==3.4.2
