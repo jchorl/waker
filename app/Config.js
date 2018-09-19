@@ -1,1 +1,1 @@
-export const PI_URL = 'http://10.0.0.242:5000'
+export const PI_URL = 'http://192.168.1.50:5000'
