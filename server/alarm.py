@@ -1,6 +1,7 @@
 import datetime
 import random
 import schedule
+import subprocess
 import time
 import vlc
 
@@ -13,6 +14,7 @@ from weather_forecast import get_forecast
 
 def alarm_job():
     print('running alarm job at {}'.format(datetime.datetime.now()))
+    __set_volume()
     try:
         __play_song()
     except Exception as e:
@@ -30,6 +32,10 @@ def alarm_job():
 def alarm_job_once():
     alarm_job()
     return schedule.CancelJob
+
+def __set_volume():
+    subprocess.call((["amixer", "sset", "DAC", "100%"]))
+    subprocess.call((["amixer", "sset", "Line Out", "100%"]))
 
 def __play_song():
     # select the device to play on
