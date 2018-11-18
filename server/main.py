@@ -1,4 +1,5 @@
 from flask import Flask, jsonify, request
+import requests
 import schedule
 import threading
 import time
@@ -6,6 +7,7 @@ import time
 from alarms import delete_alarm, get_alarms, new_alarm
 from db import db_session, init_db
 from spotify import get_playlists, get_default_playlist, get_next_wakeup_song, set_default_playlist, set_next_wakeup_song, search, get_devices
+import watchdog_pb2
 
 
 # Flask routing
@@ -64,6 +66,12 @@ def get_devices_handler():
 def shutdown_session(exception=None):
     db_session.remove()
 
+def notify_watchdog():
+    watch = watchdog_pb2.Watch()
+    watch.name = "waker"
+    watch.frequency = watchdog_pb2.Watch.DAILY
+    requests.post('https://watchdog.joshchorlton.com/ping', data = watch.SerializeToString())
+
 init_db()
 
 # alarm execution thread
@@ -76,3 +84,5 @@ class ScheduleThread(threading.Thread):
 
 continuous_thread = ScheduleThread()
 continuous_thread.start()
+
+schedule.every().hour.do(notify_watchdog)
