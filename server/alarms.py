@@ -21,9 +21,12 @@ alarms are specified by a dict:
     }
 """
 
+# tag to apply to all alarm jobs
+ALARM_TAG = 'alarm'
+
 def get_alarms():
     # group jobs by tag
-    jobs = schedule.jobs
+    jobs = [job for job in schedule.jobs if ALARM_TAG in job.tags]
     sorted_jobs = sorted(jobs, key=lambda job: next(iter(job.tags)))
 
     alarms = []
@@ -51,10 +54,10 @@ def new_alarm(alarm_info):
         for day in alarm_info['days']:
             job = schedule.every().week
             job.start_day = day
-            job.at(alarm_time).tag(alarm_id).do(alarm_job)
+            job.at(alarm_time).tag(ALARM_TAG, alarm_id).do(alarm_job)
             alarm_info['next_run'] = min(alarm_info['next_run'], job.next_run) if 'next_run' in alarm_info else job.next_run
     else:
-        job = schedule.every().day.at(alarm_time).tag(alarm_id).do(alarm_job_once)
+        job = schedule.every().day.at(alarm_time).tag(ALARM_TAG, alarm_id).do(alarm_job_once)
         alarm_info['next_run'] = job.next_run
     alarm_info['id'] = alarm_id
     return alarm_info

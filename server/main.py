@@ -85,4 +85,4 @@ class ScheduleThread(threading.Thread):
 continuous_thread = ScheduleThread()
 continuous_thread.start()
 
-schedule.every().hour.do(notify_watchdog)
+schedule.every().hour.tag('watchdog').do(notify_watchdog)
