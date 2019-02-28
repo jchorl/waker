@@ -14,7 +14,6 @@ serve:
 
 prod:
 	docker run -it -d \
-		-v $(PWD):/waker \
 		-w /waker/server \
 		-v /dev/snd:/dev/snd \
 		--privileged \
