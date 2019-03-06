@@ -14,7 +14,6 @@ serve:
 
 prod:
 	docker run -it -d \
-		-w /waker/server \
 		-v /dev/snd:/dev/snd \
 		--privileged \
 		-p 5000:5000 \
