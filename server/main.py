@@ -5,6 +5,7 @@ import threading
 import time
 
 from alarms import delete_alarm, get_alarms, new_alarm
+import avahi
 from db import db_session, init_db
 from spotify import get_playlists, get_default_playlist, get_next_wakeup_song, set_default_playlist, set_next_wakeup_song, search, get_devices
 import watchdog_pb2
@@ -12,6 +13,9 @@ import watchdog_pb2
 
 # Flask routing
 app = Flask(__name__)
+
+avahi_service = avahi.Waker(5000)
+avahi_service.register()
 
 @app.route('/alarms', methods=['GET'])
 def get_alarms_handler():
@@ -64,6 +68,7 @@ def get_devices_handler():
 
 @app.teardown_appcontext
 def shutdown_session(exception=None):
+    avahi_service.unregister()
     db_session.remove()
 
 def notify_watchdog():
