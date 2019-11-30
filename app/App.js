@@ -1,7 +1,7 @@
 import * as React from 'react';
 import { View, StyleSheet, Dimensions } from 'react-native';
 import { TabView, TabBar, SceneMap } from 'react-native-tab-view';
-import { Constants } from 'expo';
+import * as Constants from 'expo-constants';
 import MusicView from './Music';
 import AlarmView from './Alarm';
 

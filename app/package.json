@@ -3,25 +3,27 @@
   "version": "0.1.0",
   "private": true,
   "devDependencies": {
+    "expo-cli": "^3.9.1",
     "jest-expo": "~27.0.0",
-    "react-native-scripts": "1.14.0",
     "react-test-renderer": "16.3.1"
   },
-  "main": "./node_modules/react-native-scripts/build/bin/crna-entry.js",
+  "main": "./node_modules/expo/AppEntry.js",
   "scripts": {
-    "start": "react-native-scripts start",
-    "eject": "react-native-scripts eject",
-    "android": "react-native-scripts android",
-    "ios": "react-native-scripts ios",
+    "start": "expo start",
+    "eject": "expo eject",
+    "android": "expo start --android",
+    "build-android": "expo build:android",
+    "ios": "expo start --ios",
     "test": "jest"
   },
   "jest": {
     "preset": "jest-expo"
   },
   "dependencies": {
-    "expo": "^27.0.1",
-    "react": "16.3.1",
-    "react-native": "~0.55.2",
+    "expo": "^33.0.0",
+    "expo-constants": "~5.0.1",
+    "react": "16.8.3",
+    "react-native": "https://github.com/expo/react-native/archive/sdk-33.0.0.tar.gz",
     "react-native-modal-datetime-picker": "^6.0.0",
     "react-native-tab-view": "^1.0.2",
     "watchman": "^1.0.0"

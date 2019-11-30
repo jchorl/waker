@@ -56,11 +56,7 @@ export default class Music extends React.Component {
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
     fetch(PI_URL + '/spotify/next_wakeup_song', {
-      body: JSON.stringify({
-        uri: track.uri,
-        name: track.name,
-        artist: track.artists[0].name,
-      }),
+      body: JSON.stringify(track),
       method: 'PUT',
       headers,
     }).
@@ -107,7 +103,7 @@ export default class Music extends React.Component {
         : null }
         <View>
           <Text>
-            Wakeup Song: {this.state.wakeupSong ? this.state.wakeupSong.name + ' - ' + this.state.wakeupSong.artist : 'Not set'}
+            Wakeup Song: {this.state.wakeupSong ? this.state.wakeupSong.name + ' - ' + this.state.wakeupSong.artists[0].name : 'Not set'}
           </Text>
         </View>
         <View>

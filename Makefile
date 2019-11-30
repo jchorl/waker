@@ -42,15 +42,15 @@ app:
 		-u $(UID):$(GID) \
 		--net=host \
 		node \
-		sh -c 'REACT_NATIVE_PACKAGER_HOSTNAME="$(IP)" npm start -- --reset-cache'
+		sh -c 'REACT_NATIVE_PACKAGER_HOSTNAME="$(IP)" npm start -- -c'
 
 app-deploy:
 	docker container run --rm -it \
 		-v $(PWD)/app:/usr/src/app \
 		-w /usr/src/app \
 		-u $(UID):$(GID) \
-		jchorl/waker-app \
-		bash
+		node \
+		npm run build-android
 
 node:
 	docker container run --rm -it \
