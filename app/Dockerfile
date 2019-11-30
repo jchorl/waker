@@ -1,5 +1,5 @@
-FROM node:10.9.0
+FROM node:13.2
 
-RUN npm install -g exp
+RUN npm install -g expo-cli
 
-CMD exp build:android
+CMD expo build:android

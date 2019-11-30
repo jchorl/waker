@@ -65,8 +65,11 @@ export default class AlarmView extends React.Component {
   deleteAlarm = id => {
     const headers = new Headers();
     headers.append("Accept", "application/json");
-    fetch(PI_URL + '/alarms/' + id, {
+    fetch(PI_URL + '/alarms', {
       method: 'DELETE',
+      body: JSON.stringify({
+        id,
+      }),
       headers,
     }).
       then(response => response.text()).

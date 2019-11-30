@@ -49,6 +49,16 @@ app-deploy:
 		-v $(PWD)/app:/usr/src/app \
 		-w /usr/src/app \
 		-u $(UID):$(GID) \
-		jchorl/waker-app
+		jchorl/waker-app \
+		bash
+
+node:
+	docker container run --rm -it \
+		-v $(PWD)/app:/usr/src/app \
+		-w /usr/src/app \
+		-u $(UID):$(GID) \
+		--net=host \
+		node \
+		bash
 
 .PHONY: app
