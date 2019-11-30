@@ -28,5 +28,5 @@ six==1.11.0
 git+git://github.com/plamere/spotipy.git@4c2c1d763a3653aa225c4af848409ec31286a6bf
 SQLAlchemy==1.2.10
 uritemplate==3.0.0
-urllib3==1.23
+urllib3==1.24.2
 Werkzeug==0.14.1
