@@ -73,7 +73,7 @@ export default class AlarmView extends React.Component {
       headers,
     }).
       then(response => response.text()).
-      then(id => {
+      then(() => {
         let alarms = this.state.alarms.slice(0).filter(a => a.id !== id);
         this.setState({
           alarms,

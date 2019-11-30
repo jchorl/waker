@@ -18,6 +18,7 @@ export default class Music extends React.Component {
     wakeupSong: '',
     playlists: [],
     defaultPlaylist: null,
+    defaultPlaylistFetched: false,
   };
 
   componentWillMount() {
@@ -30,9 +31,9 @@ export default class Music extends React.Component {
       then(response => response.json()).
       then(defaultPlaylist => {
         if (defaultPlaylist) {
-          this.setState({ defaultPlaylist: defaultPlaylist.uri })
+          this.setState({ defaultPlaylist: defaultPlaylist.uri, defaultPlaylistFetched: true })
         }
-      });
+      }).catch(() => { this.setState({ defaultPlaylistFetched: true }); });
     fetch(PI_URL + '/spotify/playlists').
       then(response => response.json()).
       then(playlists => this.setState({ playlists }));
@@ -71,16 +72,20 @@ export default class Music extends React.Component {
   };
 
   selectDefaultPlaylist = playlistUri => {
+    // On app boot, fetching all playlists and the default playlist race.
+    // But the Picker calls selectDefaultPlaylist when the results come through
+    // if no playlist has been selected already. So just ignore this selection.
+    if (!this.state.defaultPlaylistFetched) {
+      return
+    }
+
     const playlist = this.state.playlists.find(p => p.uri === playlistUri);
 
     const headers = new Headers();
     headers.append("Accept", "application/json");
     headers.append("Content-Type", "application/json");
     fetch(PI_URL + '/spotify/default_playlist', {
-      body: JSON.stringify({
-        uri: playlist.uri,
-        name: playlist.name,
-      }),
+      body: JSON.stringify(playlist),
       method: 'PUT',
       headers,
     }).
